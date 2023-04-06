@@ -23,7 +23,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.start().whileTrue(new GregMode(controller::getLeftY, controller::getRightX, basePilotable));
+    controller.start().toggleOnTrue(new GregMode(controller::getLeftY, controller::getRightX, basePilotable));
   }
 
   public Command getAutonomousCommand() {

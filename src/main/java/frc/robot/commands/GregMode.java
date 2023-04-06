@@ -29,7 +29,7 @@ public class GregMode extends CommandBase {
   
   @Override
   public void execute() {
-    pilotableBase.drive(vx.getAsDouble(), vz.getAsDouble());
+    pilotableBase.drive(vx.getAsDouble() * 1.5, vz.getAsDouble());
   }
   
   @Override
