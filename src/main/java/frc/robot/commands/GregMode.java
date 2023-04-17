@@ -7,15 +7,15 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PilotableBase;
+import frc.robot.subsystems.BasePilotable;
 
 public class GregMode extends CommandBase {
   
-  PilotableBase pilotableBase;
+  BasePilotable pilotableBase;
   DoubleSupplier vx;
   DoubleSupplier vz;
 
-  public GregMode(DoubleSupplier vx, DoubleSupplier vz, PilotableBase pilotableBase) {
+  public GregMode(DoubleSupplier vx, DoubleSupplier vz, BasePilotable pilotableBase) {
     this.vx = vx;
     this.vz = vz;
     this.pilotableBase = pilotableBase;

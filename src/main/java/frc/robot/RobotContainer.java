@@ -6,20 +6,20 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.Driving;
+import frc.robot.commands.Conduire;
 import frc.robot.commands.GregMode;
-import frc.robot.subsystems.PilotableBase;
+import frc.robot.subsystems.BasePilotable;
 
 public class RobotContainer {
 
-  private final PilotableBase basePilotable = new PilotableBase();
+  private final BasePilotable basePilotable = new BasePilotable();
 
   CommandXboxController controller = new CommandXboxController(0);
 
   public RobotContainer() {
     configureBindings();
 
-    basePilotable.setDefaultCommand(new Driving(controller::getLeftY, controller::getRightX, basePilotable));
+    basePilotable.setDefaultCommand(new Conduire(controller::getLeftY, controller::getRightX, basePilotable));
   }
 
   private void configureBindings() {

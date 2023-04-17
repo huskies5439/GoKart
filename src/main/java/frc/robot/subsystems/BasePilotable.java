@@ -4,18 +4,24 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BasePilotableConstants;
 
-public class PilotableBase extends SubsystemBase {
+public class BasePilotable extends SubsystemBase {
   // Motors
   private CANSparkMax leftMotor1 = new CANSparkMax(31, MotorType.kBrushless);
   private CANSparkMax leftMotor2 = new CANSparkMax(30, MotorType.kBrushless);
@@ -31,8 +37,12 @@ public class PilotableBase extends SubsystemBase {
   private Encoder leftEncoder = new Encoder(0, 1, false);
   private Encoder rightEncoder = new Encoder(2, 3, true);
   private double conversionEncoder;
-  
-  public PilotableBase() {
+
+  //Pneumatique
+  private DoubleSolenoid pistonTransmission = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 2); 
+  private boolean isHighGear = false;
+
+  public BasePilotable() {
     // Initial Reset
     resetEncoder();
 
@@ -107,6 +117,25 @@ public class PilotableBase extends SubsystemBase {
       setRamp(0);
     }
   }
+
+  //Transmission
+  public boolean getIsHighGear() {
+    return isHighGear;
+    }
+
+    public void highGear() {
+      pistonTransmission.set(DoubleSolenoid.Value.kForward);
+
+      isHighGear = true;
+    }
+
+    public void lowGear() {
+      pistonTransmission.set(DoubleSolenoid.Value.kReverse);
+
+      isHighGear = false;
+    }
+  
+
 
   /*      Methods for Encoders      */
 
