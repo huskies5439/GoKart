@@ -5,9 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Conduire;
-import frc.robot.commands.GregMode;
+import frc.robot.commands.Transmission;
 import frc.robot.subsystems.BasePilotable;
 
 public class RobotContainer {
@@ -23,8 +24,9 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.start().toggleOnTrue(new GregMode(controller::getLeftY, controller::getRightX, basePilotable));
-  }
+    controller.rightTrigger().toggleOnTrue(new StartEndCommand(basePilotable:: highGear, basePilotable:: lowGear));
+
+    }
 
   public Command getAutonomousCommand() {
     return null;

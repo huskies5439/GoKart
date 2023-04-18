@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BasePilotable;
 
@@ -17,11 +15,11 @@ public class Conduire extends CommandBase {
   DoubleSupplier forward;
   DoubleSupplier turn;
 
-  public Conduire(DoubleSupplier forward, DoubleSupplier turn, BasePilotable pilotableBase) {
+  public Conduire(DoubleSupplier forward, DoubleSupplier turn, BasePilotable basePilotable) {
     this.forward = forward;
     this.turn = turn;
-    this.basePilotable = pilotableBase;
-    addRequirements(pilotableBase);
+    this.basePilotable = basePilotable;
+    addRequirements(basePilotable);
   }
  
   @Override
@@ -31,17 +29,10 @@ public class Conduire extends CommandBase {
   
   @Override
   public void execute() {
-    basePilotable.drive(forward.getAsDouble(), turn.getAsDouble());
+    basePilotable.conduire(forward.getAsDouble(), turn.getAsDouble());
 
-    //Changer les vitesse
-    if(! basePilotable.getIsHighGear() && Math.abs(basePilotable.getSpeed()) > 1.65) {
-     
-      basePilotable.highGear();
-    }
-      else if(basePilotable.getIsHighGear() && Math.abs(basePilotable.getSpeed()) >1.25) {
-        basePilotable.lowGear();
-      
-    }
+
+  
   }
 
   @Override

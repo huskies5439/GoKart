@@ -6,7 +6,5 @@ package frc.robot;
 
 public final class Constants {
 
-  public static class BasePilotableConstants {
-    public static final double kRamp = 0.2;
-  }
+
 }
