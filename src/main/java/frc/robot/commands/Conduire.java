@@ -30,9 +30,6 @@ public class Conduire extends CommandBase {
   @Override
   public void execute() {
     basePilotable.conduire(forward.getAsDouble(), turn.getAsDouble());
-
-
-  
   }
 
   @Override
