@@ -63,7 +63,7 @@ public class BasePilotable extends SubsystemBase {
   /* Driving Methods */
 
   public void conduire(double vx, double vz) {
-    drive.arcadeDrive(-0.75 * vx, -0.65 * vz);
+    drive.arcadeDrive(-1.00 * vx, -0.65 * vz);
   }
 
   public void autoConduire(double leftVolts, double rightVolts) {
