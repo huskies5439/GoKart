@@ -15,7 +15,7 @@ import pabeles.concurrency.ConcurrencyOps.Reset;
 public class Tourelle extends SubsystemBase {
   private CANSparkMax neotourelle = new CANSparkMax(28,MotorType.kBrushless);
   private ProfiledPIDController pid = new ProfiledPIDController(0.25, 0, 0, 
-       TrapezoidProfile.Constraints(5, 5));
+    new TrapezoidProfile.Constraints(5, 5));
       
   public Tourelle() {
    neotourelle.getEncoder().setPositionConversionFactor(3.6);
@@ -55,7 +55,9 @@ public boolean setSoftLimit(double vinput) {
     return pid.atSetpoint();
   }
 
-
+public void resetEncoder() {
+  neotourelle.getEncoder().setPosition(0);
+}
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

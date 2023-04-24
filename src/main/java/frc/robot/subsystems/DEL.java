@@ -12,58 +12,64 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DEL extends SubsystemBase {
 
-  private AddressableLED delD = new AddressableLED(1);
-  private AddressableLEDBuffer delDListe = new AddressableLEDBuffer(60);
-  private AddressableLED delG = new AddressableLED(2);
-  private AddressableLEDBuffer delGListe = new AddressableLEDBuffer(60);
+  private AddressableLED del = new AddressableLED(0);
+  private AddressableLEDBuffer delBuffer = new AddressableLEDBuffer(8); //LE nombre de sections de DEL ici 3 DEL/Section
+  int rainbowC;
 
   /** Creates a new DEL. */
   public DEL() {
-    delD.setLength(delDListe.getLength());
-    delD.setData(delDListe);
-    delD.start();
-    delG.setLength(delGListe.getLength());
-    delG.setData(delGListe);
-    delG.start();
-
+    del.setLength(delBuffer.getLength());
+    del.setData(delBuffer);
+    del.start();
+     //off();
+    //setCouleur(255,0,0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    delD.setData(delDListe);
-    delG.setData(delGListe);
-  }
-
-  public void setCouleur(boolean right, Color couleur) {
-    if(right){
-      for (int i = 0; i < delDListe.getLength(); i++) {
-        delDListe.setLED(i, couleur);
-      }
-
-    }
-    else{
-      for (int i = 0; i < delGListe.getLength(); i++) {
-        delGListe.setLED(i, couleur);
-      }
-
-    }
+    
+    rainbow();
+    del.setData(delBuffer);
 
   }
 
-  public void off(boolean right) {
-    if(right){
-      for (int i = 0; i < delDListe.getLength(); i++) {
-        delDListe.setRGB(i, 0, 0, 0);
+  public void setCouleur(int rouge, int vert, int bleu) {
+      for (var i = 0; i < delBuffer.getLength(); i++) {
+        delBuffer.setRGB(i, rouge, bleu, vert);
       }
+        del.setData(delBuffer);
+    
 
-    }
-    else{
-      for (int i = 0; i < delGListe.getLength(); i++) {
-        delGListe.setRGB(i, 0, 0, 0);
+  }
+
+  public void rouge(){
+    setCouleur(255, 0, 0);
+  }
+  public void vert(){
+    setCouleur(0, 255, 0);
+  }
+
+
+  public void off() {
+      for (int i = 0; i < delBuffer.getLength(); i++) {
+        delBuffer.setRGB(i, 0, 0, 0);
       }
+      del.setData(delBuffer);
+  }
 
+  private void rainbow() {
+    // For every pixel
+    for (var i = 0; i < delBuffer.getLength(); i++) {
+      // Calculate the hue - hue is easier for rainbows because the color
+      // shape is a circle so only one value needs to precess
+      final var hue = (rainbowC + (i * 180 / delBuffer.getLength())) % 180;
+      // Set the value
+      delBuffer.setHSV(i, hue, 255, 128);
     }
-
+    // Increase by to make the rainbow "move"
+    rainbowC += 3;
+    // Check bounds
+    rainbowC %= 180;
   }
 }
