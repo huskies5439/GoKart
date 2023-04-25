@@ -9,15 +9,13 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Conduire;
 import frc.robot.subsystems.BasePilotable;
-import frc.robot.subsystems.DEL;
 
 public class RobotContainer {
 
   private final BasePilotable basePilotable = new BasePilotable();
 
-  private final DEL del = new DEL();
-
   CommandXboxController controller = new CommandXboxController(0);
+  
 
   public RobotContainer() {
     configureBindings();

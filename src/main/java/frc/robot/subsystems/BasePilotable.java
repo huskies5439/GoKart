@@ -8,12 +8,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BasePilotable extends SubsystemBase {
@@ -37,6 +40,12 @@ public class BasePilotable extends SubsystemBase {
   private DoubleSolenoid pistonTransmission = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 2);
   private boolean isHighGear = false;
 
+  // Del
+  private AddressableLED del = new AddressableLED(0);
+  private AddressableLEDBuffer delBuffer = new AddressableLEDBuffer(8); // LE nombre de sections de DEL ici 3
+                                                                        // DEL/Section
+  int rainbowC;
+
   public BasePilotable() {
     // Initial Reset
     resetEncodeur();
@@ -51,6 +60,13 @@ public class BasePilotable extends SubsystemBase {
 
     moteurG.setInverted(true);
     moteurD.setInverted(false);
+
+    drive.setDeadband(0.05);
+
+    // DEL
+    del.setLength(delBuffer.getLength());
+    del.setData(delBuffer);
+    del.start();
   }
 
   @Override
@@ -63,7 +79,7 @@ public class BasePilotable extends SubsystemBase {
   /* Driving Methods */
 
   public void conduire(double vx, double vz) {
-    drive.arcadeDrive(-1.00 * vx, -0.65 * vz);
+    drive.arcadeDrive(-0.75 * vx, -0.65 * vz);
   }
 
   public void autoConduire(double leftVolts, double rightVolts) {
@@ -155,5 +171,59 @@ public class BasePilotable extends SubsystemBase {
   public void resetEncodeur() {
     encodeurD.reset();
     encodeurG.reset();
+  }
+
+  /////////////////////////////////////// DEL
+  /////////////////////////////////////// //////////////////////////////////////////////////
+
+  public void setCouleur(int rouge, int vert, int bleu) {
+    for (var i = 0; i < delBuffer.getLength(); i++) {
+      delBuffer.setRGB(i, rouge, bleu, vert);
+    }
+    del.setData(delBuffer);
+
+  }
+  
+  public void setCouleur(Color color) {
+    for (var i = 0; i < delBuffer.getLength(); i++) {
+      delBuffer.setLED(i, color);
+    }
+    del.setData(delBuffer);
+
+  }
+
+  public void rouge() {
+    setCouleur(255, 0, 0);
+  }
+
+  public void vert() {
+    setCouleur(0, 255, 0);
+  }
+
+  public void bleu() {
+    setCouleur(0, 0, 255);
+
+  }
+
+  public void off() {
+    for (int i = 0; i < delBuffer.getLength(); i++) {
+      delBuffer.setRGB(i, 0, 0, 0);
+    }
+    del.setData(delBuffer);
+  }
+
+  public void rainbow() {
+    // For every pixel
+    for (var i = 0; i < delBuffer.getLength(); i++) {
+      // Calculate the hue - hue is easier for rainbows because the color
+      // shape is a circle so only one value needs to precess
+      final var hue = (rainbowC + (i * 180 / delBuffer.getLength())) % 180;
+      // Set the value
+      delBuffer.setHSV(i, hue, 255, 128);
+    }
+    // Increase by to make the rainbow "move"
+    rainbowC += 3;
+    // Check bounds
+    rainbowC %= 180;
   }
 }

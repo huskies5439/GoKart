@@ -6,13 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BasePilotable;
-import frc.robot.subsystems.DEL;
 
 public class controleCouleur extends CommandBase {
   BasePilotable basePilotable;
-  DEL del;
   /** Creates a new controleCouleur. */
-  public controleCouleur(BasePilotable basePilotable, DEL del) {
+  public controleCouleur(BasePilotable basePilotable) {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -22,7 +20,29 @@ public class controleCouleur extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(basePilotable.getIsHighGear()){
+      basePilotable.rainbow();
+
+    }
+    else{
+      basePilotable.setCouleur(255, 255, 255);;
+
+    }
+    if(basePilotable.getVitesse() < -1){
+
+
+    }
+    else if(basePilotable.getVitesse() > 1){
+
+    }
+    else{
+
+
+    }
+    
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
