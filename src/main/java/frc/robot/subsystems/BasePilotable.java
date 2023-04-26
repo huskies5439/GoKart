@@ -44,7 +44,7 @@ public class BasePilotable extends SubsystemBase {
   private AddressableLED del = new AddressableLED(0);
   private AddressableLEDBuffer delBuffer = new AddressableLEDBuffer(8); // LE nombre de sections de DEL ici 3
                                                                         // DEL/Section
-  int rainbowC;
+  int rainbowC = 0;
 
   public BasePilotable() {
     // Initial Reset
@@ -79,7 +79,7 @@ public class BasePilotable extends SubsystemBase {
   /* Driving Methods */
 
   public void conduire(double vx, double vz) {
-    drive.arcadeDrive(-0.75 * vx, -0.65 * vz);
+    drive.arcadeDrive(-0.9 * vx, -0.65 * vz);
   }
 
   public void autoConduire(double leftVolts, double rightVolts) {
@@ -135,13 +135,13 @@ public class BasePilotable extends SubsystemBase {
   }
 
   public void highGear() {
-    pistonTransmission.set(DoubleSolenoid.Value.kForward);
+    pistonTransmission.set(DoubleSolenoid.Value.kReverse);
 
     isHighGear = true;
   }
 
   public void lowGear() {
-    pistonTransmission.set(DoubleSolenoid.Value.kReverse);
+    pistonTransmission.set(DoubleSolenoid.Value.kForward);
 
     isHighGear = false;
   }
@@ -185,7 +185,7 @@ public class BasePilotable extends SubsystemBase {
   }
   
   public void setCouleur(Color color) {
-    for (var i = 0; i < delBuffer.getLength(); i++) {
+    for (int i = 0; i < delBuffer.getLength(); i++) {
       delBuffer.setLED(i, color);
     }
     del.setData(delBuffer);
@@ -212,18 +212,19 @@ public class BasePilotable extends SubsystemBase {
     del.setData(delBuffer);
   }
 
-  public void rainbow() {
+  public void rainbow(double speed) {
     // For every pixel
-    for (var i = 0; i < delBuffer.getLength(); i++) {
+    for (int i = 0; i < delBuffer.getLength(); i++) {
       // Calculate the hue - hue is easier for rainbows because the color
       // shape is a circle so only one value needs to precess
-      final var hue = (rainbowC + (i * 180 / delBuffer.getLength())) % 180;
+      final int hue = (rainbowC + (i * 180 / delBuffer.getLength())) % 180;
       // Set the value
-      delBuffer.setHSV(i, hue, 255, 128);
+      delBuffer.setHSV(i, Math.round(hue), 255, 128);
     }
     // Increase by to make the rainbow "move"
-    rainbowC += 3;
+    rainbowC += 5*speed;
     // Check bounds
     rainbowC %= 180;
+    del.setData(delBuffer);
   }
 }

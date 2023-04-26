@@ -31,6 +31,16 @@ public class Conduire extends CommandBase {
   public void execute() {
     basePilotable.conduire(forward.getAsDouble(), turn.getAsDouble());
     
+    if(basePilotable.getIsHighGear()){
+      basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
+
+    }
+    else{
+      basePilotable.setCouleur(255, 255, 255);;
+
+    }
+
+    
   }
 
   @Override

@@ -15,7 +15,8 @@ import pabeles.concurrency.ConcurrencyOps.Reset;
 public class Tourelle extends SubsystemBase {
   private CANSparkMax neotourelle = new CANSparkMax(28,MotorType.kBrushless);
   private ProfiledPIDController pid = new ProfiledPIDController(0.25, 0, 0, 
-    new TrapezoidProfile.Constraints(5, 5));
+    new
+     TrapezoidProfile.Constraints(5, 5));
       
   public Tourelle() {
    neotourelle.getEncoder().setPositionConversionFactor(3.6);

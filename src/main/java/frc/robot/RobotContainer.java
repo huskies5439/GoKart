@@ -21,6 +21,7 @@ public class RobotContainer {
     configureBindings();
 
     basePilotable.setDefaultCommand(new Conduire(controller::getLeftY, controller::getRightX, basePilotable));
+    
   }
 
   private void configureBindings() {
