@@ -46,6 +46,9 @@ public class BasePilotable extends SubsystemBase {
                                                                         // DEL/Section
   int rainbowC = 0;
 
+  //babyWheelProtocol
+  boolean babyWheelProtocol;
+
   public BasePilotable() {
     // Initial Reset
     resetEncodeur();
@@ -62,6 +65,8 @@ public class BasePilotable extends SubsystemBase {
     moteurD.setInverted(false);
 
     drive.setDeadband(0.05);
+
+    babyWheelOff();
 
     // DEL
     del.setLength(delBuffer.getLength());
@@ -120,7 +125,7 @@ public class BasePilotable extends SubsystemBase {
   public void setBrakeAndRampTeleop(boolean isTeleop) {
     if (isTeleop) {
       setBrake(false);
-      setRamp(0.2);
+      setRamp(1);
     }
 
     else {
@@ -135,9 +140,13 @@ public class BasePilotable extends SubsystemBase {
   }
 
   public void highGear() {
+    if (!getBabyWheelProtocol()){
     pistonTransmission.set(DoubleSolenoid.Value.kReverse);
 
     isHighGear = true;
+
+    }
+
   }
 
   public void lowGear() {
@@ -226,5 +235,15 @@ public class BasePilotable extends SubsystemBase {
     // Check bounds
     rainbowC %= 180;
     del.setData(delBuffer);
+  }
+
+  public void babyWheelOn() {
+    babyWheelProtocol = true;
+  }
+  public void babyWheelOff() {
+    babyWheelProtocol = false;
+  }
+  public boolean getBabyWheelProtocol() {
+    return babyWheelProtocol;
   }
 }

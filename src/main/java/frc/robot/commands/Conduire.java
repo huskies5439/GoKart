@@ -12,12 +12,14 @@ import frc.robot.subsystems.BasePilotable;
 public class Conduire extends CommandBase {
   
   BasePilotable basePilotable;
-  DoubleSupplier forward;
-  DoubleSupplier turn;
+  DoubleSupplier joystickAvancer;
+  DoubleSupplier joystickTourner;
+  double avancer;
+  double tourner;
 
-  public Conduire(DoubleSupplier forward, DoubleSupplier turn, BasePilotable basePilotable) {
-    this.forward = forward;
-    this.turn = turn;
+  public Conduire(DoubleSupplier jowstickAvancer, DoubleSupplier joystickTourner, BasePilotable basePilotable) {
+    this.joystickAvancer = jowstickAvancer;
+    this.joystickTourner = joystickTourner;
     this.basePilotable = basePilotable;
     addRequirements(basePilotable);
   }
@@ -29,7 +31,16 @@ public class Conduire extends CommandBase {
   
   @Override
   public void execute() {
-    basePilotable.conduire(forward.getAsDouble(), turn.getAsDouble());
+    avancer = joystickAvancer.getAsDouble();
+    tourner = joystickTourner.getAsDouble();
+    
+    if (basePilotable.getBabyWheelProtocol()) {
+      avancer*=0.6; //chiffre a valider
+      tourner*=0.6;
+    }
+
+
+    basePilotable.conduire(avancer, tourner);
     
     if(basePilotable.getIsHighGear()){
       basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
