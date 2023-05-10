@@ -36,7 +36,15 @@ public class Conduire extends CommandBase {
     
     if (basePilotable.getBabyWheelProtocol()) {
       avancer*=0.6; //chiffre a valider
-      tourner*=0.6;
+      tourner*=0.8;
+      basePilotable.lowGear();
+      basePilotable.setCouleur(255,0,127);
+    }
+    if (basePilotable.getFullSpeed()) {
+      avancer = 1;
+      tourner = 1;
+      basePilotable.highGear();
+      basePilotable.setCouleur(255,0,0);
     }
 
 
@@ -46,7 +54,7 @@ public class Conduire extends CommandBase {
       basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
 
     }
-    else{
+    else if (!basePilotable.getBabyWheelProtocol()){
       basePilotable.setCouleur(255, 255, 255);;
 
     }

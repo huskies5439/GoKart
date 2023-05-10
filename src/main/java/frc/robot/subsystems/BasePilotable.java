@@ -49,6 +49,9 @@ public class BasePilotable extends SubsystemBase {
   //babyWheelProtocol
   boolean babyWheelProtocol;
 
+  //fullSpeed
+  boolean fullSpeed;
+
   public BasePilotable() {
     // Initial Reset
     resetEncodeur();
@@ -67,6 +70,8 @@ public class BasePilotable extends SubsystemBase {
     drive.setDeadband(0.05);
 
     babyWheelOff();
+
+    fullSpeedOff();
 
     // DEL
     del.setLength(delBuffer.getLength());
@@ -245,5 +250,15 @@ public class BasePilotable extends SubsystemBase {
   }
   public boolean getBabyWheelProtocol() {
     return babyWheelProtocol;
+  }
+
+  public void fullSpeedOn() {
+    fullSpeed = true;
+  }
+  public void fullSpeedOff() {
+    fullSpeed = false;
+  }
+  public boolean getFullSpeed() {
+    return fullSpeed;
   }
 }
