@@ -40,21 +40,26 @@ public class Conduire extends CommandBase {
       basePilotable.lowGear();
       basePilotable.setCouleur(255,0,127);
     }
-    if (basePilotable.getFullSpeed()) {
-      avancer = 1;
-      tourner = 1;
-      basePilotable.highGear();
-      basePilotable.setCouleur(255,0,0);
+    if (basePilotable.getNeutre()) {
+      basePilotable.setBrakeAndRampTeleop(false);
+      basePilotable.setCouleur(0,0,255);
+      if (basePilotable.getIsHighGear() && basePilotable.getNeutre()) {
+        basePilotable.setCouleur(0,255,0);
+      }
+      else {
+        basePilotable.setCouleur(0,0,255);
+      }
     }
+   
 
 
     basePilotable.conduire(avancer, tourner);
     
-    if(basePilotable.getIsHighGear()){
+    if(basePilotable.getIsHighGear() && !basePilotable.getNeutre()){
       basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
 
     }
-    else if (!basePilotable.getBabyWheelProtocol()){
+    else if (!basePilotable.getBabyWheelProtocol() && !basePilotable.getNeutre()){
       basePilotable.setCouleur(255, 255, 255);;
 
     }

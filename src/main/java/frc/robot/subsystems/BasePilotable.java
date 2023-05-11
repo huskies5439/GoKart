@@ -49,6 +49,9 @@ public class BasePilotable extends SubsystemBase {
   //babyWheelProtocol
   boolean babyWheelProtocol;
 
+  //neutral mode
+  boolean neurte;
+
   //fullSpeed
   boolean fullSpeed;
 
@@ -71,7 +74,7 @@ public class BasePilotable extends SubsystemBase {
 
     babyWheelOff();
 
-    fullSpeedOff();
+    
 
     // DEL
     del.setLength(delBuffer.getLength());
@@ -89,7 +92,7 @@ public class BasePilotable extends SubsystemBase {
   /* Driving Methods */
 
   public void conduire(double vx, double vz) {
-    drive.arcadeDrive(-0.9 * vx, -0.65 * vz);
+    drive.arcadeDrive(-0.99 * vx, -0.65 * vz);
   }
 
   public void autoConduire(double leftVolts, double rightVolts) {
@@ -251,14 +254,14 @@ public class BasePilotable extends SubsystemBase {
   public boolean getBabyWheelProtocol() {
     return babyWheelProtocol;
   }
+  public void neutreOn() {
+    neurte = true;
+  }
+  public void neutreOff() {
+    neurte = false;
+  }
+  public boolean getNeutre() {
+    return neurte;
+  }
 
-  public void fullSpeedOn() {
-    fullSpeed = true;
-  }
-  public void fullSpeedOff() {
-    fullSpeed = false;
-  }
-  public boolean getFullSpeed() {
-    return fullSpeed;
-  }
 }
