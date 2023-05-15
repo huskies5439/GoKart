@@ -26,7 +26,7 @@ public class Conduire extends CommandBase {
  
   @Override
   public void initialize() {
-    basePilotable.setBrakeAndRampTeleop(true);
+   
   }
   
   @Override
@@ -38,30 +38,24 @@ public class Conduire extends CommandBase {
       avancer*=0.6; //chiffre a valider
       tourner*=0.8;
       basePilotable.lowGear();
-      basePilotable.setCouleur(255,0,127);
     }
-    if (basePilotable.getNeutre()) {
-      basePilotable.setBrakeAndRampTeleop(false);
-      basePilotable.setCouleur(0,0,255);
-      if (basePilotable.getIsHighGear() && basePilotable.getNeutre()) {
-        basePilotable.setCouleur(0,255,0);
-      }
-      else {
-        basePilotable.setCouleur(0,0,255);
-      }
-    }
-   
 
+  
 
     basePilotable.conduire(avancer, tourner);
     
-    if(basePilotable.getIsHighGear() && !basePilotable.getNeutre()){
+///GESTION DES COULEURS
+
+    if(basePilotable.getIsHighGear()){
       basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
 
     }
-    else if (!basePilotable.getBabyWheelProtocol() && !basePilotable.getNeutre()){
-      basePilotable.setCouleur(255, 255, 255);;
+    else if (basePilotable.getBabyWheelProtocol()){
+      basePilotable.rose();
 
+    }
+    else{
+      basePilotable.blanc();
     }
 
     

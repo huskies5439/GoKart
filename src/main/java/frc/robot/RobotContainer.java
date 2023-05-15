@@ -26,9 +26,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     controller.rightTrigger().toggleOnTrue(new StartEndCommand(basePilotable:: highGear, basePilotable:: lowGear));
-    // controller.a().toggleOnTrue(new StartEndCommand(del::rouge, del::vert, del));
-    controller.leftStick().and(controller.b()).and(controller.rightBumper()).toggleOnTrue(new StartEndCommand(basePilotable::babyWheelOn, basePilotable::babyWheelOff));
-    controller.leftBumper().toggleOnTrue(new StartEndCommand(basePilotable::neutreOn,basePilotable::neutreOff));
+    controller.start().and(controller.b()).and(controller.rightBumper()).toggleOnTrue(new StartEndCommand(basePilotable::babyWheelOn, basePilotable::babyWheelOff));
   }
 
   public Command getAutonomousCommand() {

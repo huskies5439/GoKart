@@ -50,17 +50,17 @@ public class BasePilotable extends SubsystemBase {
   boolean babyWheelProtocol;
 
   //neutral mode
-  boolean neurte;
+  boolean neutre;
 
-  //fullSpeed
-  boolean fullSpeed;
 
   public BasePilotable() {
     // Initial Reset
     resetEncodeur();
 
     // Ramp & Brake
-    setBrakeAndRampTeleop(true);
+    setBrake(false);
+    setRamp(2);
+
 
     conversionEncoder = Math.PI * 0.2032 / (256 * 3 * 2.5);
 
@@ -71,6 +71,8 @@ public class BasePilotable extends SubsystemBase {
     moteurD.setInverted(false);
 
     drive.setDeadband(0.05);
+
+
 
     babyWheelOff();
 
@@ -130,17 +132,7 @@ public class BasePilotable extends SubsystemBase {
     moteurD2.setOpenLoopRampRate(ramp);
   }
 
-  public void setBrakeAndRampTeleop(boolean isTeleop) {
-    if (isTeleop) {
-      setBrake(false);
-      setRamp(1);
-    }
 
-    else {
-      setBrake(true);
-      setRamp(0);
-    }
-  }
 
   // Transmission
   public boolean getIsHighGear() {
@@ -222,6 +214,14 @@ public class BasePilotable extends SubsystemBase {
 
   }
 
+  public void rose(){
+    setCouleur(255,0,127);
+  }
+
+  public void blanc(){
+    setCouleur(255,255,255);
+  }
+
   public void off() {
     for (int i = 0; i < delBuffer.getLength(); i++) {
       delBuffer.setRGB(i, 0, 0, 0);
@@ -254,14 +254,6 @@ public class BasePilotable extends SubsystemBase {
   public boolean getBabyWheelProtocol() {
     return babyWheelProtocol;
   }
-  public void neutreOn() {
-    neurte = true;
-  }
-  public void neutreOff() {
-    neurte = false;
-  }
-  public boolean getNeutre() {
-    return neurte;
-  }
+
 
 }
