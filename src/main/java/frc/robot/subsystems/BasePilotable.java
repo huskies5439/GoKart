@@ -49,9 +49,6 @@ public class BasePilotable extends SubsystemBase {
   //babyWheelProtocol
   boolean babyWheelProtocol;
 
-  //neutral mode
-  boolean neutre;
-
 
   public BasePilotable() {
     // Initial Reset
@@ -59,7 +56,7 @@ public class BasePilotable extends SubsystemBase {
 
     // Ramp & Brake
     setBrake(false);
-    setRamp(1.25);
+    setRamp(0);//1.25
 
 
     conversionEncoder = Math.PI * 0.2032 / (256 * 3 * 2.5);
