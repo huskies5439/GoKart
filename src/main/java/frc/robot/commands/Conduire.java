@@ -17,8 +17,8 @@ public class Conduire extends CommandBase {
   DoubleSupplier joystickTourner;
   double avancer;
   double tourner;
-  SlewRateLimiter rampAvancer = new SlewRateLimiter(3); //plus le chiffre est haut,plus il accelere vite.
-  SlewRateLimiter rampTourner = new SlewRateLimiter(100);
+  SlewRateLimiter rampAvancer = new SlewRateLimiter(2); //plus le chiffre est haut,plus il accelere vite.
+  SlewRateLimiter rampTourner = new SlewRateLimiter(7);
 
   public Conduire(DoubleSupplier jowstickAvancer, DoubleSupplier joystickTourner, BasePilotable basePilotable) {
     this.joystickAvancer = jowstickAvancer;

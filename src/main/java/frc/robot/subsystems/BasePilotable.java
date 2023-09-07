@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -86,6 +87,8 @@ public class BasePilotable extends SubsystemBase {
     SmartDashboard.putNumber("Vitesse", getVitesse());
     SmartDashboard.putNumber("Position droite", getPositionG());
     SmartDashboard.putNumber("Position gauche", getPositionD());
+    SmartDashboard.putNumber("Courant Moteur Gauche 1", moteurG1.getOutputCurrent());
+    SmartDashboard.putNumber("Courant Moteur Gauche 2", moteurG2.getOutputCurrent());
   }
 
   /* Driving Methods */
@@ -98,7 +101,9 @@ public class BasePilotable extends SubsystemBase {
     moteurG.setVoltage(leftVolts);
     moteurD.setVoltage(rightVolts);
     drive.feed();
+    
   }
+
 
   public void stop() {
     autoConduire(0, 0);
