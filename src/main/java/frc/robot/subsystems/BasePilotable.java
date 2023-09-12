@@ -22,13 +22,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BasePilotable extends SubsystemBase {
   // Motors
-  private CANSparkMax moteurG1 = new CANSparkMax(31, MotorType.kBrushless);
-  private CANSparkMax moteurG2 = new CANSparkMax(30, MotorType.kBrushless);
-  private CANSparkMax moteurD1 = new CANSparkMax(32, MotorType.kBrushless);
-  private CANSparkMax moteurD2 = new CANSparkMax(33, MotorType.kBrushless);
+  private CANSparkMax moteurGAR = new CANSparkMax(31, MotorType.kBrushless);
+  private CANSparkMax moteurGAV = new CANSparkMax(30, MotorType.kBrushless);
+  private CANSparkMax moteurDAV = new CANSparkMax(32, MotorType.kBrushless);
+  private CANSparkMax moteurDAR = new CANSparkMax(33, MotorType.kBrushless);
 
-  private MotorControllerGroup moteurG = new MotorControllerGroup(moteurG1, moteurG2);
-  private MotorControllerGroup moteurD = new MotorControllerGroup(moteurD1, moteurD2);
+  private MotorControllerGroup moteurG = new MotorControllerGroup(moteurGAR, moteurGAV);
+  private MotorControllerGroup moteurD = new MotorControllerGroup(moteurDAV, moteurDAR);
 
   private DifferentialDrive drive = new DifferentialDrive(moteurG, moteurD);
 
@@ -87,8 +87,8 @@ public class BasePilotable extends SubsystemBase {
     SmartDashboard.putNumber("Vitesse", getVitesse());
     SmartDashboard.putNumber("Position droite", getPositionG());
     SmartDashboard.putNumber("Position gauche", getPositionD());
-    SmartDashboard.putNumber("Courant Moteur Gauche 1", moteurG1.getOutputCurrent());
-    SmartDashboard.putNumber("Courant Moteur Gauche 2", moteurG2.getOutputCurrent());
+    SmartDashboard.putNumber("Courant Moteur Gauche 1", moteurGAR.getOutputCurrent());
+    SmartDashboard.putNumber("Courant Moteur Gauche 2", moteurGAV.getOutputCurrent());
   }
 
   /* Driving Methods */
@@ -113,25 +113,25 @@ public class BasePilotable extends SubsystemBase {
 
   public void setBrake(Boolean brake) {
     if (brake) {
-      moteurG1.setIdleMode(IdleMode.kBrake);
-      moteurG2.setIdleMode(IdleMode.kBrake);
-      moteurD1.setIdleMode(IdleMode.kBrake);
-      moteurD2.setIdleMode(IdleMode.kBrake);
+      moteurGAR.setIdleMode(IdleMode.kBrake);
+      moteurGAV.setIdleMode(IdleMode.kBrake);
+      moteurDAV.setIdleMode(IdleMode.kBrake);
+      moteurDAR.setIdleMode(IdleMode.kBrake);
     }
 
     else {
-      moteurG1.setIdleMode(IdleMode.kCoast);
-      moteurG2.setIdleMode(IdleMode.kCoast);
-      moteurD1.setIdleMode(IdleMode.kCoast);
-      moteurD2.setIdleMode(IdleMode.kCoast);
+      moteurGAR.setIdleMode(IdleMode.kCoast);
+      moteurGAV.setIdleMode(IdleMode.kCoast);
+      moteurDAV.setIdleMode(IdleMode.kCoast);
+      moteurDAR.setIdleMode(IdleMode.kCoast);
     }
   }
 
   public void setRamp(double ramp) {
-    moteurG1.setOpenLoopRampRate(ramp);
-    moteurG2.setOpenLoopRampRate(ramp);
-    moteurD1.setOpenLoopRampRate(ramp);
-    moteurD2.setOpenLoopRampRate(ramp);
+    moteurGAR.setOpenLoopRampRate(ramp);
+    moteurGAV.setOpenLoopRampRate(ramp);
+    moteurDAV.setOpenLoopRampRate(ramp);
+    moteurDAR.setOpenLoopRampRate(ramp);
   }
 
 
