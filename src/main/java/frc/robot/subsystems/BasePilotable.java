@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,12 +22,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 public class BasePilotable extends SubsystemBase {
   // Motors
-  private CANSparkMax moteurGAR = new CANSparkMax(31, MotorType.kBrushless);
-  private CANSparkMax moteurGAV = new CANSparkMax(30, MotorType.kBrushless);
-  private CANSparkMax moteurDAV = new CANSparkMax(32, MotorType.kBrushless);
-  private CANSparkMax moteurDAR = new CANSparkMax(33, MotorType.kBrushless);
+  private WPI_TalonSRX moteurGAR = new WPI_TalonSRX(0);
+  private WPI_TalonSRX moteurGAV = new WPI_TalonSRX(0);
+  private WPI_TalonSRX moteurDAV = new WPI_TalonSRX(0);
+  private WPI_TalonSRX moteurDAR = new WPI_TalonSRX(0);
 
   private MotorControllerGroup moteurG = new MotorControllerGroup(moteurGAR, moteurGAV);
   private MotorControllerGroup moteurD = new MotorControllerGroup(moteurDAV, moteurDAR);
@@ -55,9 +60,9 @@ public class BasePilotable extends SubsystemBase {
     // Initial Reset
     resetEncodeur();
 
-    // Ramp & Brake
+    //Brake, la ramp est gérée par le SlewRateLimiter dans Conduire.
     setBrake(false);
-    setRamp(0);//1.25
+
 
 
     conversionEncoder = Math.PI * 0.2032 / (256 * 3 * 2.5);
@@ -113,26 +118,20 @@ public class BasePilotable extends SubsystemBase {
 
   public void setBrake(Boolean brake) {
     if (brake) {
-      moteurGAR.setIdleMode(IdleMode.kBrake);
-      moteurGAV.setIdleMode(IdleMode.kBrake);
-      moteurDAV.setIdleMode(IdleMode.kBrake);
-      moteurDAR.setIdleMode(IdleMode.kBrake);
+      moteurGAR.setNeutralMode(NeutralMode.Brake);
+      moteurGAV.setNeutralMode(NeutralMode.Brake);
+      moteurDAV.setNeutralMode(NeutralMode.Brake);
+      moteurDAR.setNeutralMode(NeutralMode.Brake);
     }
 
     else {
-      moteurGAR.setIdleMode(IdleMode.kCoast);
-      moteurGAV.setIdleMode(IdleMode.kCoast);
-      moteurDAV.setIdleMode(IdleMode.kCoast);
-      moteurDAR.setIdleMode(IdleMode.kCoast);
+      moteurGAR.setNeutralMode(NeutralMode.Coast);
+      moteurGAV.setNeutralMode(NeutralMode.Coast);
+      moteurDAV.setNeutralMode(NeutralMode.Coast);
+      moteurDAR.setNeutralMode(NeutralMode.Coast);
     }
   }
 
-  public void setRamp(double ramp) {
-    moteurGAR.setOpenLoopRampRate(ramp);
-    moteurGAV.setOpenLoopRampRate(ramp);
-    moteurDAV.setOpenLoopRampRate(ramp);
-    moteurDAR.setOpenLoopRampRate(ramp);
-  }
 
 
 
