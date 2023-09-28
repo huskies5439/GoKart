@@ -27,10 +27,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class BasePilotable extends SubsystemBase {
   // Motors
-  private WPI_TalonSRX moteurGAR = new WPI_TalonSRX(0);
-  private WPI_TalonSRX moteurGAV = new WPI_TalonSRX(0);
-  private WPI_TalonSRX moteurDAV = new WPI_TalonSRX(0);
-  private WPI_TalonSRX moteurDAR = new WPI_TalonSRX(0);
+  private WPI_TalonSRX moteurGAR = new WPI_TalonSRX(4);
+  private WPI_TalonSRX moteurGAV = new WPI_TalonSRX(3);
+  private WPI_TalonSRX moteurDAV = new WPI_TalonSRX(2);
+  private WPI_TalonSRX moteurDAR = new WPI_TalonSRX(1);
 
   private MotorControllerGroup moteurG = new MotorControllerGroup(moteurGAR, moteurGAV);
   private MotorControllerGroup moteurD = new MotorControllerGroup(moteurDAV, moteurDAR);
