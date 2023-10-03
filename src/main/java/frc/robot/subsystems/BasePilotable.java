@@ -70,8 +70,8 @@ public class BasePilotable extends SubsystemBase {
     encodeurG.setDistancePerPulse(conversionEncoder);
     encodeurD.setDistancePerPulse(conversionEncoder);
 
-    moteurG.setInverted(true);
-    moteurD.setInverted(false);
+    moteurG.setInverted(false);
+    moteurD.setInverted(true);
 
     drive.setDeadband(0.05);
 
@@ -90,16 +90,19 @@ public class BasePilotable extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Vitesse", getVitesse());
-    SmartDashboard.putNumber("Position droite", getPositionG());
-    SmartDashboard.putNumber("Position gauche", getPositionD());
-    SmartDashboard.putNumber("Courant Moteur Gauche 1", moteurGAR.getOutputCurrent());
-    SmartDashboard.putNumber("Courant Moteur Gauche 2", moteurGAV.getOutputCurrent());
+    SmartDashboard.putNumber("Position droite", getPositionD());
+    SmartDashboard.putNumber("Position gauche", getPositionG());
+    SmartDashboard.putNumber("Courant Moteur Gauche arriere", moteurGAR.getStatorCurrent());
+    SmartDashboard.putNumber("Courant Moteur Gauche avant", moteurGAV.getStatorCurrent());
+    SmartDashboard.putNumber("Courant Moteur Droite arriere", moteurDAR.getStatorCurrent());
+    SmartDashboard.putNumber("Courant Moteur Droite avant", moteurDAV.getStatorCurrent());
+
   }
 
   /* Driving Methods */
 
   public void conduire(double vx, double vz) {
-    drive.arcadeDrive(-0.99 * vx, -0.65 * vz);
+    drive.arcadeDrive(0.99 * vx, 0.65 * vz);
   }
 
   public void autoConduire(double leftVolts, double rightVolts) {
