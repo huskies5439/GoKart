@@ -11,6 +11,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -55,6 +58,13 @@ public class BasePilotable extends SubsystemBase {
   //babyWheelProtocol
   boolean babyWheelProtocol;
 
+  //Test PID
+  private final PIDController PIDDroit = new PIDController(1, 0, 0); // changer valeur
+  private final PIDController PIDGauche = new PIDController(1, 0,0);
+
+  private final DifferentialDriveKinematics kinematic = new DifferentialDriveKinematics(0.61);
+
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0); //changer valeur
 
   public BasePilotable() {
     // Initial Reset
