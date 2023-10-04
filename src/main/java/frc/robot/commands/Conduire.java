@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BasePilotable;
 
@@ -36,6 +37,8 @@ public class Conduire extends CommandBase {
   public void execute() {
     avancer = joystickAvancer.getAsDouble();
     tourner = joystickTourner.getAsDouble();
+    SmartDashboard.putNumber("joystick x", avancer);
+    SmartDashboard.putNumber("joystick z", tourner);
 
 
     if (basePilotable.getBabyWheelProtocol()) {
@@ -46,7 +49,7 @@ public class Conduire extends CommandBase {
 
   
     
-    basePilotable.conduire(rampAvancer.calculate(avancer),rampTourner.calculate(tourner));
+    basePilotable.conduirePID(rampAvancer.calculate(avancer)*1,rampTourner.calculate(tourner)*2);
     
 ///GESTION DES COULEURS
 

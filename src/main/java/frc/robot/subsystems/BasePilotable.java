@@ -13,7 +13,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -59,12 +61,12 @@ public class BasePilotable extends SubsystemBase {
   boolean babyWheelProtocol;
 
   //Test PID
-  private final PIDController PIDDroit = new PIDController(1, 0, 0); // changer valeur
-  private final PIDController PIDGauche = new PIDController(1, 0,0);
+  private final PIDController PIDDroit = new PIDController(0, 0, 0); // changer valeur
+  private final PIDController PIDGauche = new PIDController(0, 0,0);
 
   private final DifferentialDriveKinematics kinematic = new DifferentialDriveKinematics(0.61);
 
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0); //changer valeur
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.11258, 2.2634); //changer valeur
 
   public BasePilotable() {
     // Initial Reset
@@ -100,12 +102,13 @@ public class BasePilotable extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Vitesse", getVitesse());
-    SmartDashboard.putNumber("Position droite", getPositionD());
-    SmartDashboard.putNumber("Position gauche", getPositionG());
-    SmartDashboard.putNumber("Courant Moteur Gauche arriere", moteurGAR.getStatorCurrent());
-    SmartDashboard.putNumber("Courant Moteur Gauche avant", moteurGAV.getStatorCurrent());
-    SmartDashboard.putNumber("Courant Moteur Droite arriere", moteurDAR.getStatorCurrent());
-    SmartDashboard.putNumber("Courant Moteur Droite avant", moteurDAV.getStatorCurrent());
+    SmartDashboard.putNumber("Vitesse droite", getVitesseD());
+    SmartDashboard.putNumber("Vitesse gauche", getVitesseG());
+    // SmartDashboard.putNumber("Courant Moteur Gauche arriere", moteurGAR.getStatorCurrent());
+    // SmartDashboard.putNumber("Courant Moteur Gauche avant", moteurGAV.getStatorCurrent());
+    // SmartDashboard.putNumber("Courant Moteur Droite arriere", moteurDAR.getStatorCurrent());
+    // SmartDashboard.putNumber("Courant Moteur Droite avant", moteurDAV.getStatorCurrent());
+
 
   }
 
@@ -127,6 +130,20 @@ public class BasePilotable extends SubsystemBase {
     autoConduire(0, 0);
   }
 
+  public void setVitesse(DifferentialDriveWheelSpeeds vitesse) {
+    final double feedforwardGauche = feedforward.calculate(vitesse.leftMetersPerSecond);
+    final double feedforwardDroit = feedforward.calculate(vitesse.rightMetersPerSecond);
+
+    final double outputGauche = PIDGauche.calculate(encodeurG.getRate(), vitesse.leftMetersPerSecond);
+    final double outputDroit = PIDDroit.calculate(encodeurD.getRate(), vitesse.rightMetersPerSecond);
+    moteurG.setVoltage(outputGauche + feedforwardGauche); 
+    moteurD.setVoltage(outputDroit + feedforwardDroit);   
+  }
+
+  public void conduirePID(double vx, double vz) {
+    var vitesseRoues = kinematic.toWheelSpeeds(new ChassisSpeeds(vx, 0.0, vz));
+    setVitesse(vitesseRoues);
+  }
   /* Methods for Motors */
 
   public void setBrake(Boolean brake) {
