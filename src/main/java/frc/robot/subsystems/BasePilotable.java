@@ -82,8 +82,8 @@ public class BasePilotable extends SubsystemBase {
     encodeurG.setDistancePerPulse(conversionEncoder);
     encodeurD.setDistancePerPulse(conversionEncoder);
 
-    moteurG.setInverted(false);
-    moteurD.setInverted(true);
+    moteurG.setInverted(true);
+    moteurD.setInverted(false);
 
     drive.setDeadband(0.05);
 
@@ -115,7 +115,7 @@ public class BasePilotable extends SubsystemBase {
   /* Driving Methods */
 
   public void conduire(double vx, double vz) {
-    drive.arcadeDrive(0.99 * vx, 0.65 * vz);
+    drive.arcadeDrive(-0.99 * vx, -0.65 * vz);
   }
 
   public void autoConduire(double leftVolts, double rightVolts) {

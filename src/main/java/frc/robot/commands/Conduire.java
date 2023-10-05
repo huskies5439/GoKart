@@ -18,6 +18,8 @@ public class Conduire extends CommandBase {
   DoubleSupplier joystickTourner;
   double avancer;
   double tourner;
+  double vxMax;
+  double vzMax;
   SlewRateLimiter rampAvancer = new SlewRateLimiter(2); //plus le chiffre est haut,plus il accelere vite.
   SlewRateLimiter rampTourner = new SlewRateLimiter(7);
 
@@ -35,21 +37,24 @@ public class Conduire extends CommandBase {
   
   @Override
   public void execute() {
-    avancer = joystickAvancer.getAsDouble();
-    tourner = joystickTourner.getAsDouble();
+    avancer = joystickAvancer.getAsDouble()*-1.0;
+    tourner = joystickTourner.getAsDouble()*-1.0;
+    vxMax = 1.0;
+    vzMax = 2.0;
     SmartDashboard.putNumber("joystick x", avancer);
     SmartDashboard.putNumber("joystick z", tourner);
 
 
     if (basePilotable.getBabyWheelProtocol()) {
-      avancer*=0.6; 
-      tourner*=0.8;
+      vxMax*=0.6; 
+      vzMax*=0.8;
       basePilotable.lowGear();
     }
-
+    SmartDashboard.putNumber("vx", rampAvancer.calculate(avancer));
+    SmartDashboard.putNumber("vz", rampTourner.calculate(tourner));
   
     
-    basePilotable.conduirePID(rampAvancer.calculate(avancer)*1,rampTourner.calculate(tourner)*2);
+    basePilotable.conduirePID(rampAvancer.calculate(avancer), rampTourner.calculate(tourner));
     
 ///GESTION DES COULEURS
 
