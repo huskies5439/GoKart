@@ -216,65 +216,65 @@ public class BasePilotable extends SubsystemBase {
   /////////////////////////////////////// DEL
   /////////////////////////////////////// //////////////////////////////////////////////////
 
-  public void setCouleur(int rouge, int vert, int bleu) {
-    for (var i = 0; i < delBuffer.getLength(); i++) {
-      delBuffer.setRGB(i, rouge, bleu, vert);
-    }
-    del.setData(delBuffer);
+  // public void setCouleur(int rouge, int vert, int bleu) {
+  //   for (var i = 0; i < delBuffer.getLength(); i++) {
+  //     delBuffer.setRGB(i, rouge, bleu, vert);
+  //   }
+  //   del.setData(delBuffer);
 
-  }
+  // }
   
-  public void setCouleur(Color color) {
-    for (int i = 0; i < delBuffer.getLength(); i++) {
-      delBuffer.setLED(i, color);
-    }
-    del.setData(delBuffer);
+  // public void setCouleur(Color color) {
+  //   for (int i = 0; i < delBuffer.getLength(); i++) {
+  //     delBuffer.setLED(i, color);
+  //   }
+  //   del.setData(delBuffer);
 
-  }
+  // }
 
-  public void rouge() {
-    setCouleur(255, 0, 0);
-  }
+  // public void rouge() {
+  //   setCouleur(255, 0, 0);
+  // }
 
-  public void vert() {
-    setCouleur(0, 255, 0);
-  }
+  // public void vert() {
+  //   setCouleur(0, 255, 0);
+  // }
 
-  public void bleu() {
-    setCouleur(0, 0, 255);
+  // public void bleu() {
+  //   setCouleur(0, 0, 255);
 
-  }
+  // }
 
-  public void rose(){
-    setCouleur(255,0,127);
-  }
+  // public void rose(){
+  //   setCouleur(255,0,127);
+  // }
 
-  public void blanc(){
-    setCouleur(255,255,255);
-  }
+  // public void blanc(){
+  //   setCouleur(255,255,255);
+  // }
 
-  public void off() {
-    for (int i = 0; i < delBuffer.getLength(); i++) {
-      delBuffer.setRGB(i, 0, 0, 0);
-    }
-    del.setData(delBuffer);
-  }
+  // public void off() {
+  //   for (int i = 0; i < delBuffer.getLength(); i++) {
+  //     delBuffer.setRGB(i, 0, 0, 0);
+  //   }
+  //   del.setData(delBuffer);
+  // }
 
-  public void rainbow(double speed) {
-    // For every pixel
-    for (int i = 0; i < delBuffer.getLength(); i++) {
-      // Calculate the hue - hue is easier for rainbows because the color
-      // shape is a circle so only one value needs to precess
-      final int hue = (rainbowC + (i * 180 / delBuffer.getLength())) % 180;
-      // Set the value
-      delBuffer.setHSV(i, Math.round(hue), 255, 128);
-    }
-    // Increase by to make the rainbow "move"
-    rainbowC += 5*speed;
-    // Check bounds
-    rainbowC %= 180;
-    del.setData(delBuffer);
-  }
+  // public void rainbow(double speed) {
+  //   // For every pixel
+  //   for (int i = 0; i < delBuffer.getLength(); i++) {
+  //     // Calculate the hue - hue is easier for rainbows because the color
+  //     // shape is a circle so only one value needs to precess
+  //     final int hue = (rainbowC + (i * 180 / delBuffer.getLength())) % 180;
+  //     // Set the value
+  //     delBuffer.setHSV(i, Math.round(hue), 255, 128);
+  //   }
+  //   // Increase by to make the rainbow "move"
+  //   rainbowC += 5*speed;
+  //   // Check bounds
+  //   rainbowC %= 180;
+  //   del.setData(delBuffer);
+  // }
 
   public void babyWheelOn() {
     babyWheelProtocol = true;

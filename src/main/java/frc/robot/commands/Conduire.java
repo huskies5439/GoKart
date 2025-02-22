@@ -37,10 +37,10 @@ public class Conduire extends CommandBase {
   
   @Override
   public void execute() {
-    avancer = joystickAvancer.getAsDouble()*-1.0;
-    tourner = joystickTourner.getAsDouble()*-1.0;
-    vxMax = 1.0;
-    vzMax = 2.0;
+    avancer = joystickAvancer.getAsDouble()*1.0;
+    tourner = joystickTourner.getAsDouble()*1.0;
+    vxMax = 5.0;
+    vzMax = 10.0;
     SmartDashboard.putNumber("joystick x", avancer);
     SmartDashboard.putNumber("joystick z", tourner);
 
@@ -54,24 +54,24 @@ public class Conduire extends CommandBase {
     SmartDashboard.putNumber("vz", rampTourner.calculate(tourner));
   
     
-    basePilotable.conduirePID(rampAvancer.calculate(avancer), rampTourner.calculate(tourner));
+    basePilotable.conduire(rampAvancer.calculate(avancer), rampTourner.calculate(tourner));
     
-///GESTION DES COULEURS
+// ///GESTION DES COULEURS
 
-    if(basePilotable.getIsHighGear()){
-      basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
+//     if(basePilotable.getIsHighGear()){
+//       basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
 
-    }
-    else if (basePilotable.getBabyWheelProtocol()){
-      basePilotable.rose();
+//     }
+//     else if (basePilotable.getBabyWheelProtocol()){
+//       basePilotable.rose();
 
-    }
-    else{
-      basePilotable.blanc();
-    }
+//     }
+//     else{
+//       basePilotable.blanc();
+//     }
 
     
-  }
+   }
 
   @Override
   public void end(boolean interrupted) {}
