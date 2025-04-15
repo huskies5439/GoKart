@@ -20,8 +20,10 @@ public class Conduire extends CommandBase {
   double tourner;
   double vxMax;
   double vzMax;
-  SlewRateLimiter rampAvancer = new SlewRateLimiter(2); //plus le chiffre est haut,plus il accelere vite.
-  SlewRateLimiter rampTourner = new SlewRateLimiter(7);
+  int RateLimitAvancer;
+  int RateLimitTourner;
+  SlewRateLimiter rampAvancer = new SlewRateLimiter(7);
+  SlewRateLimiter rampTourner = new SlewRateLimiter(6);
 
   public Conduire(DoubleSupplier jowstickAvancer, DoubleSupplier joystickTourner, BasePilotable basePilotable) {
     this.joystickAvancer = jowstickAvancer;
@@ -37,24 +39,28 @@ public class Conduire extends CommandBase {
   
   @Override
   public void execute() {
-    avancer = joystickAvancer.getAsDouble()*1.0;
-    tourner = joystickTourner.getAsDouble()*1.0;
-    vxMax = 5.0;
-    vzMax = 10.0;
+    vxMax = 2.0;
+    vzMax = Math.toRadians(225);
     SmartDashboard.putNumber("joystick x", avancer);
     SmartDashboard.putNumber("joystick z", tourner);
-
 
     if (basePilotable.getBabyWheelProtocol()) {
       vxMax*=0.6; 
       vzMax*=0.8;
       basePilotable.lowGear();
     }
-    SmartDashboard.putNumber("vx", rampAvancer.calculate(avancer));
-    SmartDashboard.putNumber("vz", rampTourner.calculate(tourner));
+
+    if (basePilotable.getIsHighGear()) {
+      vxMax*=1.5;
+      vzMax*=1.5;
+    }
+
+    // SmartDashboard.putNumber("vx", rampAvancer.calculate(avancer));
+    // SmartDashboard.putNumber("vz", rampTourner.calculate(tourner));
+
   
     
-    basePilotable.conduire(rampAvancer.calculate(avancer), rampTourner.calculate(tourner));
+    basePilotable.conduirePID(rampAvancer.calculate(joystickAvancer.getAsDouble()*-vxMax), rampTourner.calculate(joystickTourner.getAsDouble()*-vzMax));
     
 // ///GESTION DES COULEURS
 
