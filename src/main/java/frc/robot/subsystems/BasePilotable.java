@@ -30,7 +30,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.RobotContainer;
 
+import java.lang.ModuleLayer.Controller;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -53,6 +56,7 @@ public class BasePilotable extends SubsystemBase {
   private Encoder encodeurD = new Encoder(2, 3, true);
   private double conversionEncoder;
 
+
   // Pneumatique
   private DoubleSolenoid pistonTransmission = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 2);
   private boolean isHighGear = false;
@@ -65,6 +69,7 @@ public class BasePilotable extends SubsystemBase {
 
   //babyWheelProtocol
   boolean babyWheelProtocol;
+
 
   //Test PID
   private final PIDController PIDDroit = new PIDController(12, 0, 0); // changer valeur
@@ -79,6 +84,9 @@ public class BasePilotable extends SubsystemBase {
 
   private ShuffleboardTab Speed = Shuffleboard.getTab("Speed");
   private GenericEntry Volts = Speed.add("Volts",1).getEntry();
+
+  //manette
+  CommandXboxController controller = new CommandXboxController(0);
 
 
   public BasePilotable() {
@@ -98,8 +106,9 @@ public class BasePilotable extends SubsystemBase {
     moteurG.setInverted(true);
     moteurD.setInverted(false);
 
-    drive.setDeadband(0.05);
 
+    drive.setDeadband(0.05);
+    
     
 
     babyWheelOff();
@@ -115,12 +124,6 @@ public class BasePilotable extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Vitesse", getVitesse());
-    SmartDashboard.putNumber("Vitesse droite", getVitesseD());
-    SmartDashboard.putNumber("Vitesse gauche", getVitesseG());
-    SmartDashboard.putData("encodeurD", encodeurD);
-    SmartDashboard.putData("encodeurG",encodeurG);
-    SmartDashboard.putNumber("encoderDistance", getPosition());
-    SmartDashboard.putNumber("DashTest", getDashboard());
     SmartDashboard.putBoolean("isHighGear", getIsHighGear());
     SmartDashboard.putBoolean("baby", getBabyWheelProtocol());
     // SmartDashboard.putNumber("Courant Moteur Gauche arriere", moteurGAR.getStatorCurrent());
@@ -173,7 +176,13 @@ public class BasePilotable extends SubsystemBase {
 
   public void conduirePID(double vx, double vz) {
     var vitesseRoues = kinematic.toWheelSpeeds(new ChassisSpeeds(vx, 0.0, vz));
+
+    if (Math.abs(controller.getLeftY()) < 0.2 && Math.abs(controller.getRightX()) < 0.2) {
+      setVoltage(0);
+    }
+    else {
     setVitesse(vitesseRoues.leftMetersPerSecond, vitesseRoues.rightMetersPerSecond);
+    }
   }
   
   /* Methods for Motors */
@@ -245,6 +254,10 @@ public class BasePilotable extends SubsystemBase {
     moteurD.setVoltage(volts);
   }
 
+  public void setVoltage(double volts) {
+    moteurD.setVoltage(volts);
+    moteurG.setVoltage(volts);
+  }
   public double getVitesse() {
     return (getVitesseD() + getVitesseG()) / 2;
   }
@@ -258,6 +271,14 @@ public class BasePilotable extends SubsystemBase {
     encodeurD.reset();
     encodeurG.reset();
   }
+
+  public void setCoast() {
+    moteurGAR.setNeutralMode(NeutralMode.Coast);
+    moteurGAV.setNeutralMode(NeutralMode.Coast);
+    moteurDAV.setNeutralMode(NeutralMode.Coast);
+    moteurDAR.setNeutralMode(NeutralMode.Coast);
+  }
+
 
   /////////////////////////////////////// DEL
   /////////////////////////////////////// //////////////////////////////////////////////////
