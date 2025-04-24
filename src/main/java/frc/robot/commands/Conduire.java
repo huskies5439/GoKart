@@ -12,6 +12,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.BasePilotable;
 
@@ -22,8 +23,8 @@ public class Conduire extends CommandBase {
   DoubleSupplier joystickTourner;
   double avancer;
   double tourner;
-  double vxMax;
-  double vzMax;
+  double vxMax = Constants.vxMax;
+  double vzMax = Constants.vzMax;
   int RateLimitAvancer;
   int RateLimitTourner;
   SlewRateLimiter rampAvancer = new SlewRateLimiter(7);
@@ -43,8 +44,6 @@ public class Conduire extends CommandBase {
   
   @Override
   public void execute() {
-    vxMax = 2.0;
-    vzMax = Math.toRadians(225);
     SmartDashboard.putNumber("joystick x", avancer);
     SmartDashboard.putNumber("joystick z", tourner);
 
@@ -64,6 +63,16 @@ public class Conduire extends CommandBase {
 
   
     basePilotable.conduirePID(rampAvancer.calculate(joystickAvancer.getAsDouble()*-vxMax), rampTourner.calculate(joystickTourner.getAsDouble()*-vzMax));
+
+    //Transmission auto
+    if (basePilotable.getAutoTransmission()) {
+    if (basePilotable.gearShiftup()) {
+      basePilotable.highGear();
+    }
+    else if (basePilotable.gearShiftdown()) {
+      basePilotable.lowGear();
+    }
+  }
 
 // ///GESTION DES COULEURS
 

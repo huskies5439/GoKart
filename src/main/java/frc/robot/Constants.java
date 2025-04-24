@@ -4,4 +4,7 @@
 
 package frc.robot;
 
-public final class Constants {}
+public final class Constants {
+    public static double vxMax = 1.5;
+    public static double vzMax = Math.toRadians(180);
+}

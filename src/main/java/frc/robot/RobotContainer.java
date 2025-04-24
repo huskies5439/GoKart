@@ -32,6 +32,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     controller.rightTrigger().toggleOnTrue(new StartEndCommand(basePilotable:: highGear, basePilotable:: lowGear));
+    controller.leftBumper().toggleOnTrue(new StartEndCommand(basePilotable:: autoTransmissionON, basePilotable:: autoTransmissionOFF));
     controller.start().and(controller.b()).and(controller.rightBumper()).toggleOnTrue(new StartEndCommand(basePilotable::babyWheelOn, basePilotable::babyWheelOff));
   }
 

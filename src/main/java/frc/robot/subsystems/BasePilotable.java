@@ -31,7 +31,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Conduire;
 
 import java.lang.ModuleLayer.Controller;
 import java.util.function.BooleanSupplier;
@@ -69,7 +71,10 @@ public class BasePilotable extends SubsystemBase {
 
   //babyWheelProtocol
   boolean babyWheelProtocol;
-
+  //gearShift
+  boolean shiftup;
+  boolean shiftdown;
+  boolean isAutoTransmission = false;
 
   //Test PID
   private final PIDController PIDDroit = new PIDController(12, 0, 0); // changer valeur
@@ -126,6 +131,7 @@ public class BasePilotable extends SubsystemBase {
     SmartDashboard.putNumber("Vitesse", getVitesse());
     SmartDashboard.putBoolean("isHighGear", getIsHighGear());
     SmartDashboard.putBoolean("baby", getBabyWheelProtocol());
+    SmartDashboard.putBoolean("autoTranssmission", getAutoTransmission()); 
     // SmartDashboard.putNumber("Courant Moteur Gauche arriere", moteurGAR.getStatorCurrent());
     // SmartDashboard.putNumber("Courant Moteur Gauche avant", moteurGAV.getStatorCurrent());
     // SmartDashboard.putNumber("Courant Moteur Droite arriere", moteurDAR.getStatorCurrent());
@@ -209,11 +215,11 @@ public class BasePilotable extends SubsystemBase {
   }
 
   public void highGear() {
-   // if (!getBabyWheelProtocol()){
+   if (!getBabyWheelProtocol()){
     pistonTransmission.set(DoubleSolenoid.Value.kReverse);
 
     isHighGear = true;
-   // }
+   }
 
   }
 
@@ -221,6 +227,24 @@ public class BasePilotable extends SubsystemBase {
     pistonTransmission.set(DoubleSolenoid.Value.kForward);
 
     isHighGear = false;
+  }
+
+  public boolean gearShiftup() {
+    if (getVitesse() >= (Constants.vxMax) && !isHighGear) {
+      return shiftup = true;
+    }
+    else {
+    return shiftup = false;
+    }
+  }
+
+  public boolean gearShiftdown() {
+    if (getVitesse() <= (Constants.vxMax - 0.75) && isHighGear) {
+      return shiftdown = true;
+    }
+    else {
+    return shiftdown = false;
+    }
   }
 
   /* Methods for Encoders */
@@ -272,11 +296,15 @@ public class BasePilotable extends SubsystemBase {
     encodeurG.reset();
   }
 
-  public void setCoast() {
-    moteurGAR.setNeutralMode(NeutralMode.Coast);
-    moteurGAV.setNeutralMode(NeutralMode.Coast);
-    moteurDAV.setNeutralMode(NeutralMode.Coast);
-    moteurDAR.setNeutralMode(NeutralMode.Coast);
+  public void autoTransmissionON() {
+    isAutoTransmission = true;
+  }
+
+  public void autoTransmissionOFF() {
+    isAutoTransmission = false;
+  }
+  public boolean getAutoTransmission() {
+    return isAutoTransmission;
   }
 
 
