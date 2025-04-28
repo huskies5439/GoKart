@@ -53,11 +53,15 @@ public class Conduire extends CommandBase {
       basePilotable.lowGear();
     }
 
-    if (basePilotable.getIsHighGear()) {
+    else if (basePilotable.getIsHighGear()) {
       vxMax*=1.5;
       vzMax*=1.5;
     }
 
+    else if(!basePilotable.getIsHighGear()){
+      vxMax = Constants.vxMax;
+      vzMax = Constants.vzMax;
+    }
     // SmartDashboard.putNumber("vx", rampAvancer.calculate(avancer));
     // SmartDashboard.putNumber("vz", rampTourner.calculate(tourner));
 
@@ -74,21 +78,24 @@ public class Conduire extends CommandBase {
     }
   }
 
-// ///GESTION DES COULEURS
+///GESTION DES COULEURS
 
-//     if(basePilotable.getIsHighGear()){
-//       basePilotable.rainbow(basePilotable.getVitesse()*-1.5);  
-
-//     }
-//     else if (basePilotable.getBabyWheelProtocol()){
-//       basePilotable.rose();
-
-//     }
-//     else{
-//       basePilotable.blanc();
-//     }
-
-    
+    if(basePilotable.getIsHighGear()){
+      basePilotable.rainbowM2(basePilotable.getVitesse()*-1.5);  
+    }
+    if (basePilotable.getBabyWheelProtocol()){
+      basePilotable.roseM1();
+      basePilotable.roseM2();
+    }
+     if (basePilotable.getAutoTransmission()) {
+      basePilotable.vertM1();
+    }
+     if(!basePilotable.getIsHighGear()){
+      basePilotable.jauneM2();
+    }
+     if (!basePilotable.getAutoTransmission()){
+      basePilotable.rougeM1();
+    }
    }
 
   @Override
