@@ -38,6 +38,8 @@ import frc.robot.commands.Conduire;
 import java.lang.ModuleLayer.Controller;
 import java.util.function.BooleanSupplier;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -78,7 +80,7 @@ public class BasePilotable extends SubsystemBase {
 
   //Test PID
   private final PIDController PIDDroit = new PIDController(12, 0, 0); // changer valeur
-  private final PIDController PIDGauche = new PIDController(12, 0, 0);
+  private final PIDController PIDGauche = new PIDController(10.185, 0, 0);
 
   private final DifferentialDriveKinematics kinematic = new DifferentialDriveKinematics(0.61);
 
@@ -132,6 +134,8 @@ public class BasePilotable extends SubsystemBase {
     SmartDashboard.putBoolean("isHighGear", getIsHighGear());
     SmartDashboard.putBoolean("baby", getBabyWheelProtocol());
     SmartDashboard.putBoolean("autoTranssmission", getAutoTransmission()); 
+    SmartDashboard.putData("Encodeur Droit", encodeurD);
+    SmartDashboard.putData("Encodeur Gauche", encodeurG);
     // SmartDashboard.putNumber("Courant Moteur Gauche arriere", moteurGAR.getStatorCurrent());
     // SmartDashboard.putNumber("Courant Moteur Gauche avant", moteurGAV.getStatorCurrent());
     // SmartDashboard.putNumber("Courant Moteur Droite arriere", moteurDAR.getStatorCurrent());
@@ -230,7 +234,7 @@ public class BasePilotable extends SubsystemBase {
   }
 
   public boolean gearShiftup() {
-    if (getVitesse() >= (Constants.vxMax) && !isHighGear) {
+    if (getVitesse() >= (Constants.vxMaxLG + 0.01) && !isHighGear) {
       return shiftup = true;
     }
     else {
@@ -239,7 +243,7 @@ public class BasePilotable extends SubsystemBase {
   }
 
   public boolean gearShiftdown() {
-    if (getVitesse() <= (Constants.vxMax - 0.75) && isHighGear) {
+    if (getVitesse() <= (Constants.vxMaxLG - 0.5) && isHighGear) {
       return shiftdown = true;
     }
     else {

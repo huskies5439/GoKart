@@ -23,8 +23,8 @@ public class Conduire extends CommandBase {
   DoubleSupplier joystickTourner;
   double avancer;
   double tourner;
-  double vxMax = Constants.vxMax;
-  double vzMax = Constants.vzMax;
+  double vxMax;
+  double vzMax;
   int RateLimitAvancer;
   int RateLimitTourner;
   SlewRateLimiter rampAvancer = new SlewRateLimiter(7);
@@ -48,19 +48,18 @@ public class Conduire extends CommandBase {
     SmartDashboard.putNumber("joystick z", tourner);
 
     if (basePilotable.getBabyWheelProtocol()) {
-      vxMax*=0.6; 
-      vzMax*=0.8;
+      vxMax= Constants.vxMaxBB; 
+      vzMax= Constants.vzMaxBB;
       basePilotable.lowGear();
     }
 
     else if (basePilotable.getIsHighGear()) {
-      vxMax*=1.5;
-      vzMax*=1.5;
+      vxMax= Constants.vxMaxHG;
+      vzMax= Constants.vzMaxHG;
     }
-
-    else if(!basePilotable.getIsHighGear()){
-      vxMax = Constants.vxMax;
-      vzMax = Constants.vzMax;
+    else {
+      vxMax= Constants.vxMaxLG;
+      vzMax= Constants.vzMaxLG;
     }
     // SmartDashboard.putNumber("vx", rampAvancer.calculate(avancer));
     // SmartDashboard.putNumber("vz", rampTourner.calculate(tourner));
@@ -80,12 +79,13 @@ public class Conduire extends CommandBase {
 
 ///GESTION DES COULEURS
 
-    if(basePilotable.getIsHighGear()){
-      basePilotable.rainbowM2(basePilotable.getVitesse()*-1.5);  
-    }
-    if (basePilotable.getBabyWheelProtocol()){
+     if (basePilotable.getBabyWheelProtocol()){
       basePilotable.roseM1();
       basePilotable.roseM2();
+    }
+    else {
+     if(basePilotable.getIsHighGear()){
+      basePilotable.rainbowM2(basePilotable.getVitesse()*-0.5);  
     }
      if (basePilotable.getAutoTransmission()) {
       basePilotable.vertM1();
@@ -97,7 +97,7 @@ public class Conduire extends CommandBase {
       basePilotable.rougeM1();
     }
    }
-
+  }
   @Override
   public void end(boolean interrupted) {}
   

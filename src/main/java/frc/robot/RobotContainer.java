@@ -34,6 +34,7 @@ public class RobotContainer {
     controller.rightTrigger().toggleOnTrue(new StartEndCommand(basePilotable:: highGear, basePilotable:: lowGear));
     controller.leftBumper().toggleOnTrue(new StartEndCommand(basePilotable:: autoTransmissionON, basePilotable:: autoTransmissionOFF));
     controller.start().and(controller.b()).and(controller.rightBumper()).toggleOnTrue(new StartEndCommand(basePilotable::babyWheelOn, basePilotable::babyWheelOff));
+    controller.a().whileTrue(new StartEndCommand(()-> basePilotable.setBrake(true),()-> basePilotable.setBrake(false), basePilotable));
   }
 
   public Command getAutonomousCommand() {
